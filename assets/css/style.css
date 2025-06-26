@@ -935,95 +935,197 @@ main {
 .project-list {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 30px;
+  gap: 35px;
   margin-bottom: 10px;
 }
 
-.project-item { display: none; }
+@media (min-width: 768px) {
+  .project-list {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (min-width: 1024px) {
+  .project-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.project-item {
+  box-shadow: 0 8px 32px 0 rgba(0,255,255,0.10), 0 1.5px 8px 0 rgba(0,0,0,0.18);
+  background: linear-gradient(135deg, rgba(0,255,255,0.10) 0%, rgba(0,0,0,0.30) 100%);
+  border-radius: 22px;
+  overflow: hidden;
+  position: relative;
+  transition:
+    box-shadow 0.4s cubic-bezier(.4,2,.3,1),
+    transform 0.4s cubic-bezier(.4,2,.3,1),
+    background 0.4s cubic-bezier(.4,2,.3,1);
+}
 
 .project-item.active {
+  animation: fadeInUp 0.8s cubic-bezier(.4,2,.3,1);
+}
+
+@keyframes fadeInUp {
+  0% { opacity: 0; transform: translateY(60px) scale(0.94);}
+  100% { opacity: 1; transform: translateY(0) scale(1);}
+}
+
+.project-item:hover {
+  box-shadow: 0 24px 64px 0 rgba(0,255,255,0.22), 0 8px 32px 0 rgba(0,0,0,0.28);
+  transform: translateY(-12px) scale(1.035) rotate(-1deg);
+  background: linear-gradient(135deg, rgba(0,255,255,0.18) 0%, rgba(0,0,0,0.38) 100%);
+  z-index: 3;
+}
+
+.project-item video {
+  border-radius: 18px;
+  box-shadow: 0 2px 16px rgba(0,255,255,0.10);
+  transition:
+    transform 0.5s cubic-bezier(.4,2,.3,1),
+    box-shadow 0.4s cubic-bezier(.4,2,.3,1),
+    filter 0.4s cubic-bezier(.4,2,.3,1);
+  filter: brightness(0.96) saturate(1.1);
+}
+
+/* Portrait video support */
+.project-item video[poster], 
+.project-item video.portrait,
+.project-item video[data-orientation="portrait"] {
+  aspect-ratio: 9/16;
+  object-fit: contain;
+  background: #0a0a0a;
+  height: 210px;
+  max-height: 320px;
+}
+
+.project-item:hover video {
+  transform: scale(1.06) rotate(0.5deg);
+  box-shadow: 0 16px 48px 0 rgba(0,255,255,0.22);
+  filter: brightness(1.04) saturate(1.2);
+}
+
+.project-item a {
   display: block;
-  animation: scaleUp 0.25s ease forwards;
-}
-
-@keyframes scaleUp {
-  0% { transform: scale(0.5); }
-  100% { transform: scale(1); }
-}
-
-.project-item > a { width: 100%; }
-
-.project-img {
+  padding: 18px 0 0 0;
   position: relative;
-  width: 100%;
-  height: 200px;
-  border-radius: 16px;
-  overflow: hidden;
-  margin-bottom: 15px;
+  z-index: 2;
 }
-
-.project-img::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: transparent;
-  z-index: 1;
-  transition: var(--transition-1);
-}
-
-.project-item > a:hover .project-img::before { background: hsla(0, 0%, 0%, 0.5); }
-
-.project-item-icon-box {
-  --scale: 0.8;
-
-  background: var(--jet);
-  color: aqua;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(var(--scale));
-  font-size: 20px;
-  padding: 18px;
-  border-radius: 12px;
-  opacity: 0;
-  z-index: 1;
-  transition: var(--transition-1);
-}
-
-.project-item > a:hover .project-item-icon-box {
-  --scale: 1;
-  opacity: 1;
-}
-
-.project-item-icon-box ion-icon { --ionicon-stroke-width: 50px; }
-
-.project-img img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: var(--transition-1);
-}
-
-.project-item > a:hover img { transform: scale(1.1); }
-
-.project-title,
-.project-category { margin-left: 10px; }
 
 .project-title {
-  color: var(--white-2);
-  font-size: var(--fs-5);
-  font-weight: var(--fw-400);
-  text-transform: capitalize;
-  line-height: 1.3;
+  margin: 22px 0 8px 0;
+  font-size: 1.18rem;
+  font-weight: 700;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  letter-spacing: 0.7px;
+  transition: color 0.3s, text-shadow 0.3s;
+  text-shadow: 0 2px 12px rgba(0,255,255,0.08);
+  opacity: 0.92;
+  animation: fadeInText 1.1s cubic-bezier(.4,2,.3,1);
+}
+
+@keyframes fadeInText {
+  0% { opacity: 0; transform: translateY(20px);}
+  100% { opacity: 0.92; transform: translateY(0);}
 }
 
 .project-category {
-  color: var(--light-gray-70);
-  font-size: var(--fs-6);
-  font-weight: var(--fw-300);
+  color: #aefcff;
+  font-size: 1.04rem;
+  font-weight: 400;
+  margin-bottom: 16px;
+  margin-left: 0;
+  letter-spacing: 0.3px;
+  text-shadow: 0 2px 8px rgba(0,255,255,0.10);
+  opacity: 0.85;
+  animation: fadeInText 1.3s cubic-bezier(.4,2,.3,1);
+}
+
+.project-item:hover .project-category {
+  color: #fff;
+  opacity: 1;
+  text-shadow: 0 4px 24px rgba(0,255,255,0.18);
+}
+
+@media (hover: hover) {
+  .project-item {
+    animation: floatCard 4s ease-in-out infinite alternate;
+  }
+  .project-item:hover {
+    animation: none;
+  }
+}
+
+@keyframes floatCard {
+  0% { transform: translateY(0) scale(1);}
+  100% { transform: translateY(-6px) scale(1.01);}
+}
+
+.project-item:hover .project-title {
+  color: #00fff7;
+  text-shadow: 0 4px 24px rgba(0,255,255,0.18);
+}
+
+.project-item .project-title i {
+  filter: drop-shadow(0 2px 12px rgba(0,255,255,0.18));
+  transition: transform 0.3s cubic-bezier(.4,2,.3,1);
+}
+
+.project-item:hover .project-title i {
+  transform: scale(1.18) rotate(-6deg);
+}
+
+/* --- Play Overlay Animation on Video Hover --- */
+.project-item video {
+  position: relative;
+  z-index: 1;
+}
+
+.project-item a::after {
+  content: "\f144";
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  color: rgba(0,255,255,0.92);
+  font-size: 2.7rem;
+  position: absolute;
+  left: 50%;
+  top: 100px;
+  transform: translate(-50%, -50%) scale(0.85);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s, transform 0.35s;
+  z-index: 4;
+  text-shadow: 0 8px 32px rgba(0,255,255,0.22);
+  filter: drop-shadow(0 0 8px #00fff7);
+}
+
+.project-item:hover a::after {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1.13);
+}
+
+.project-item a {
+  position: relative;
+}
+
+@media (max-width: 580px) {
+  .project-item {
+    border-radius: 14px;
+  }
+  .project-item video {
+    border-radius: 10px;
+  }
+  .project-title {
+    font-size: 1.02rem;
+    margin: 14px 0 6px 0;
+  }
+  .project-category {
+    font-size: 0.97rem;
+    margin-bottom: 10px;
+  }
 }
 
 
